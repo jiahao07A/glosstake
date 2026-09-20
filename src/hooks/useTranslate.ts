@@ -10,8 +10,6 @@ import {
   setSummaryContent,
   setSummaryError,
   setSummaryStatus,
-  setReviewAction,
-  setTempData
 } from '../redux/envReducer'
 import {
   LANGUAGE_DEFAULT,
@@ -40,9 +38,6 @@ const useTranslate = () => {
   const language = LANGUAGES_MAP[envData.language??LANGUAGE_DEFAULT]
   const summarizeLanguage = LANGUAGES_MAP[envData.summarizeLanguage??SUMMARIZE_LANGUAGE_DEFAULT]
   const title = useAppSelector(state => state.env.title)
-  const reviewed = useAppSelector(state => state.env.tempData.reviewed)
-  const reviewAction = useAppSelector(state => state.env.reviewAction)
-  const reviewActions = useAppSelector(state => state.env.tempData.reviewActions)
   const {sendExtension} = useMessage(!!envData.sidePanel)
   /**
    * 获取下一个需要翻译的行
@@ -126,14 +121,6 @@ const useTranslate = () => {
   }, [data?.body, envData, language.name, title, dispatch, sendExtension])
 
   const addSummarizeTask = useCallback(async (type: SummaryType, segment: Segment) => {
-    // review action
-    if (reviewed === undefined && !reviewAction) {
-      dispatch(setReviewAction(true))
-      dispatch(setTempData({
-        reviewActions: (reviewActions ?? 0) + 1
-      }))
-    }
-
     if (segment.text.length >= SUMMARIZE_THRESHOLD) {
       let subtitles = ''
       for (const item of segment.items) {
@@ -176,7 +163,7 @@ const useTranslate = () => {
       const task = await sendExtension(null, 'ADD_TASK', {taskDef})
       dispatch(addTaskId(task.id))
     }
-  }, [dispatch, envData, reviewAction, reviewActions, reviewed, sendExtension, summarizeLanguage.name, title])
+  }, [dispatch, envData, sendExtension, summarizeLanguage.name, title])
 
   const addAskTask = useCallback(async (id: string, segment: Segment, question: string) => {
     if (segment.text.length >= SUMMARIZE_THRESHOLD) {

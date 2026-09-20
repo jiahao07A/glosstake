@@ -49,9 +49,6 @@ interface EnvState {
 
   searchText: string
   searchResult: Record<string, boolean>
-
-  // 当前视频是否计算过操作
-  reviewAction: boolean
 }
 
 const initialState: EnvState = {
@@ -79,8 +76,6 @@ const initialState: EnvState = {
   searchResult: {},
 
   asks: [],
-
-  reviewAction: false,
 }
 
 export const slice = createSlice({
@@ -101,9 +96,6 @@ export const slice = createSlice({
         ...state.tempData,
         ...action.payload,
       }
-    },
-    setReviewAction: (state, action: PayloadAction<boolean>) => {
-      state.reviewAction = action.payload
     },
     setPath: (state, action: PayloadAction<'app' | 'options' | undefined>) => {
       state.path = action.payload
@@ -332,7 +324,6 @@ export const {
   setAutoTranslate,
   setAutoScroll,
   setNoVideo,
-  setReviewAction,
   setNeedScroll,
   setCurIdx,
   setEnvData,
