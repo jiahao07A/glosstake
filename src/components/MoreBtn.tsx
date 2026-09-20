@@ -13,7 +13,6 @@ import {setEnvData, setTempData} from '../redux/envReducer'
 import {EventBusContext} from '../Router'
 import {EVENT_EXPAND} from '../consts/const'
 import {formatSrtTime, formatTime, formatVttTime, downloadText} from '../utils/util'
-import {openUrl} from '../utils/env_util'
 import toast from 'react-hot-toast'
 import {getSummarize} from '../utils/bizUtil'
 import dayjs from 'dayjs'
@@ -248,47 +247,6 @@ const MoreBtn = (props: Props) => {
             下载音频(m4s)
           </a>
         </li>
-        {/* <li className='hover:bg-accent'>
-          <a className='flex items-center' onClick={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            openUrl('https://jq.qq.com/?_wv=1027&k=RJyFABPF')
-          }}>
-            <BsFillChatDotsFill className='w-[20px] h-[20px] text-primary/75 bg-white rounded-sm p-0.5'/>
-            QQ交流群(194536885)
-          </a>
-        </li>
-        <li className='hover:bg-accent'>
-          <a className='flex items-center' onClick={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            openUrl('https://static.ssstab.com/images/indiekky_public.png')
-          }}>
-            <AiFillWechat className='w-[20px] h-[20px] text-primary/75 bg-white rounded-sm p-0.5'/>
-            微信公众号(IndieKKY)
-          </a>
-        </li> */}
-        {/* <li className='hover:bg-accent'> */}
-        {/*  <a className='flex items-center' onClick={(e) => { */}
-        {/*    e.preventDefault() */}
-        {/*    e.stopPropagation() */}
-        {/*    openUrl('https://bibigpt.co/r/bilibili') */}
-        {/*  }}> */}
-        {/*    <img alt='BibiGPT' src='/bibigpt.png' className='w-[20px] h-[20px] bg-white rounded-sm p-0.5'/> */}
-        {/*    BibiGPT */}
-        {/*  </a> */}
-        {/* </li> */}
-        {/* <li className='hover:bg-accent'> */}
-        {/*  <a className='flex items-center' onClick={(e) => { */}
-        {/*    e.preventDefault() */}
-        {/*    e.stopPropagation() */}
-        {/*    openUrl('https://chromewebstore.google.com/detail/fiaeclpicddpifeflpmlgmbjgaedladf') */}
-        {/*  }}> */}
-        {/*    <img alt='youtube subtitle' src='/youtube-caption.png' */}
-        {/*         className='w-[20px] h-[20px] bg-white rounded-sm p-0.5'/> */}
-        {/*    Youtube Caption */}
-        {/*  </a> */}
-        {/* </li> */}
         <li className='hover:bg-accent'>
           <a className='flex items-center' onClick={(e) => {
             chrome.runtime.openOptionsPage()
@@ -298,17 +256,6 @@ const MoreBtn = (props: Props) => {
           }}>
             <IoMdSettings className='w-[20px] h-[20px] text-primary/75 bg-white rounded-sm p-0.5'/>
             选项
-          </a>
-        </li>
-        {/* 官网 */}
-        <li className='hover:bg-accent'>
-          <a className='flex items-center' onClick={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            openUrl('https://www.bibijun.cc')
-          }}>
-            <img alt='哔哔君' src='/favicon-128x128.png' className='w-[20px] h-[20px] bg-white rounded-sm p-0.5'/>
-            🏠 哔哔君官网
           </a>
         </li>
       </ul>

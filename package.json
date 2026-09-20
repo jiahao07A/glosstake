@@ -1,16 +1,16 @@
 {
   "private": true,
-  "name": "bilibili-subtitle",
+  "name": "glosstake",
   "version": "1.14.1",
   "type": "module",
-  "description": "哔哩哔哩字幕列表",
+  "description": "Gloss - B站视频字幕列表浏览器扩展",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && node fix.cjs",
     "fix": "eslint --fix --quiet ."
   },
-  "author": "IndieKKY",
+  "author": "jiahao07A",
   "license": "MIT",
   "dependencies": {
     "@crxjs/vite-plugin": "^1.0.14",

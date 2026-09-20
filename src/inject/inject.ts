@@ -137,7 +137,6 @@ const debug = (...args: any[]) => {
       if (!iframe) return
     }
 
-    // fix: https://github.com/IndieKKY/bilibili-subtitle/issues/5
     // 处理稍后再看的url( https://www.bilibili.com/list/watchlater?bvid=xxx&oid=xxx )
     const pathSearchs: Record<string, string> = {}
     // eslint-disable-next-line no-return-assign

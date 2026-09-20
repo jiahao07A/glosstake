@@ -2,9 +2,9 @@ export const DEFAULT_USE_PORT = false
 
 export const EVENT_EXPAND = 'expand'
 
-export const APP_DOM_ID = 'bilibili-subtitle'
+export const APP_DOM_ID = 'glosstake'
 
-export const IFRAME_ID = 'bilibili-subtitle-iframe'
+export const IFRAME_ID = 'glosstake-iframe'
 
 export const STORAGE_ENV = 'bilibili-subtitle_env'
 export const STORAGE_TEMP = 'bilibili-subtitle_temp'
