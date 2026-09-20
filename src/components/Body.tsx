@@ -37,7 +37,6 @@ import { openUrl } from '../utils/env_util'
 import useKeyService from '../hooks/useKeyService'
 import Ask from './Ask'
 import { v4 } from 'uuid'
-import RateExtension from '../components/RateExtension'
 import ApiKeyReminder from './ApiKeyReminder'
 import { useMessaging } from '../message'
 
@@ -299,8 +298,6 @@ const Body = () => {
       </ul>
 
       <ApiKeyReminder />
-
-      <RateExtension />
     </div>
   </div>
 }
