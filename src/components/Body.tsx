@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import {
   addAskInfo,
   mergeAskInfo,
@@ -33,7 +33,6 @@ import {
 } from '../consts/const'
 import { FaClipboardList } from 'react-icons/fa'
 import useTranslate from '../hooks/useTranslate'
-import { openUrl } from '../utils/env_util'
 import useKeyService from '../hooks/useKeyService'
 import Ask from './Ask'
 import { v4 } from 'uuid'
@@ -286,8 +285,8 @@ const Body = () => {
       {asks.map(ask => <Ask key={ask.id} ask={ask} />)}
 
       {/* segments */}
-      {segments?.map((segment, segmentIdx) => <SegmentCard key={segment.startIdx} segment={segment}
-        segmentIdx={segmentIdx} bodyRef={bodyRef} />)}
+      {segments?.map(segment => <SegmentCard key={segment.startIdx} segment={segment}
+        bodyRef={bodyRef} />)}
 
       {/* tip */}
       <div className='text-sm font-semibold text-center'>快捷键提示</div>

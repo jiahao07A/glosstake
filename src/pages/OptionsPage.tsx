@@ -158,10 +158,6 @@ const OptionsPage = () => {
     setFetchAmountValue(parseInt(e.target.value))
   }, [])
 
-  const onWordsChange = useCallback((e: any) => {
-    setWordsValue(parseInt(e.target.value))
-  }, [])
-
   const onSel1 = useCallback(() => {
     setTransDisplayValue('originPrimary')
   }, [])

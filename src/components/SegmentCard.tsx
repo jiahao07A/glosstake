@@ -18,11 +18,10 @@ import { RootState } from '../store'
 const SummarizeItemOverview = (props: {
   segment: Segment
   summary: OverviewSummary
-  segmentIdx: number
   overviewItem: OverviewItem
   idx: number
 }) => {
-  const { segment, summary, segmentIdx, overviewItem, idx} = props
+  const { segment, summary, overviewItem, idx} = props
 
   const {move} = useSubtitle()
   const time = parseStrTimeToSeconds(overviewItem.time)
@@ -61,13 +60,11 @@ const SummarizeItemOverview = (props: {
 
 const Summarize = (props: {
   segment: Segment
-  segmentIdx: number
   summary?: Summary
   float?: boolean
 }) => {
-  const {segment, segmentIdx, summary, float} = props
+  const {segment, summary, float} = props
 
-  const dispatch = useAppDispatch()
   const envData = useAppSelector(state => state.env.envData)
   const fontSize = useAppSelector(state => state.env.envData.fontSize)
   const curSummaryType = useAppSelector(state => state.env.tempData.curSummaryType)
@@ -98,7 +95,7 @@ const Summarize = (props: {
       {summary?.type === 'overview' && (summary.content != null) &&
         <ul className={classNames('font-medium list-none max-w-[90%]', fontSize === 'large' ? 'text-sm' : 'text-xs')}>
           {(summary.content).map((overviewItem: OverviewItem, idx: number) =>
-            <SummarizeItemOverview key={idx} idx={idx} summary={summary} overviewItem={overviewItem} segment={segment} segmentIdx={segmentIdx}/>)}
+            <SummarizeItemOverview key={idx} idx={idx} summary={summary} overviewItem={overviewItem} segment={segment}/>)}
         </ul>}
       {summary?.type === 'keypoint' && (summary.content != null) &&
         <ul className={classNames('font-medium list-disc max-w-[90%]', fontSize === 'large' ? 'text-sm' : 'text-xs')}>
@@ -133,9 +130,8 @@ const Summarize = (props: {
 const SegmentCard = (props: {
   bodyRef: MutableRefObject<any>
   segment: Segment
-  segmentIdx: number
 }) => {
-  const {bodyRef, segment, segmentIdx} = props
+  const {bodyRef, segment} = props
 
   const dispatch = useAppDispatch()
   const summarizeRef = useRef<any>(null)
@@ -252,7 +248,7 @@ const SegmentCard = (props: {
         className='absolute right-0 top-0 bottom-0 text-xs desc-lighter select-none flex-center'>{getLastTime(segment.items[segment.items.length - 1].to - segment.items[0].from)}</div>
     </div>
     {summarizeEnable && <div ref={summarizeRef}>
-      <Summarize segment={segment} segmentIdx={segmentIdx} summary={summary}/>
+      <Summarize segment={segment} summary={summary}/>
     </div>}
     {!segment.fold
       ? <div>
@@ -280,7 +276,7 @@ const SegmentCard = (props: {
       onWheel={stopPopFunc}
     >
       <div className='bg-primary/50 p-2'>
-        <Summarize segment={segment} segmentIdx={segmentIdx} summary={summary} float/>
+        <Summarize segment={segment} summary={summary} float/>
       </div>
     </div>}
   </div>

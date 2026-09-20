@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import {useMemo} from 'react'
 import {formatTime} from '../utils/util'
 import {useAppSelector} from '../hooks/redux'
 import {getDisplay, getTransText} from '../utils/bizUtil'

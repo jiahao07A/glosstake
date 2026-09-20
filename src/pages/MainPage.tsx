@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect} from 'react'
+import {useCallback, useContext, useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import Header from '../components/Header'
 import Body from '../components/Body'

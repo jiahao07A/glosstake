@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef} from 'react'
+import {useCallback, useEffect, useMemo, useRef} from 'react'
 import {useAppDispatch, useAppSelector} from '../hooks/redux'
 import useSubtitle from '../hooks/useSubtitle'
 import {setCheckAutoScroll, setCurOffsetTop, setNeedScroll} from '../redux/envReducer'
