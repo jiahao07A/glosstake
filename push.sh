@@ -75,14 +75,45 @@ fs.writeFileSync(file, next)
 
 # 版本号必须先于构建写入：manifest.config.ts 从 package.json 读 version 注入 manifest.json。
 # 因此一旦后续步骤失败，需要回滚 package.json，避免留下"版本号已改但未发布"的半成品。
+#
+# 回滚谓词不能只看"是否成功"——发布流程的 git 副作用是分阶段落地的，需分三种情况处理：
+#   1) commit 之前失败：无任何 git 副作用，直接还原 package.json，重试安全。
+#   2) commit 之后、push 之前失败：commit 已落地。若只还原 package.json，会造成
+#      HEAD 与工作区版本号矛盾，且重试时 `git commit` 因无改动而失败
+#      （nothing added to commit → exit 1），无法续跑。故撤销该 commit 后再还原工作区。
+#   3) push 之后失败（如 tag 冲突）：commit 已推送，不能本地撤销（会与远端分叉）。
+#      此时保持 HEAD 与工作区一致，并打印手工续跑指引。
 WORK_BACKUP=""
 DRY_TMP=""
-SUCCEEDED=false
+COMMITTED=false
+PUSHED=false
 on_exit() {
   code=$?
-  if [ "$SUCCEEDED" != true ] && [ -n "$WORK_BACKUP" ] && [ -f "$WORK_BACKUP" ]; then
-    cp "$WORK_BACKUP" package.json
-    echo "流程中止（退出码 $code），package.json 已回滚为 $current_version" >&2
+  if [ "$code" -ne 0 ] && [ -n "$WORK_BACKUP" ] && [ -f "$WORK_BACKUP" ]; then
+    if [ "$COMMITTED" != true ]; then
+      # 情况 1：无 git 副作用，直接还原工作区
+      cp "$WORK_BACKUP" package.json
+      echo "流程中止（退出码 $code），package.json 已回滚为 $current_version" >&2
+    elif [ "$PUSHED" != true ]; then
+      # 情况 2：commit 已产生但未推送。撤销提交（--mixed 同时复位索引，避免留下已暂存的改动），
+      # 再还原工作区，使 HEAD / 索引 / 工作区三者回到发布前的状态，重试可续跑。
+      if git reset --mixed HEAD~1 >/dev/null 2>&1; then
+        cp "$WORK_BACKUP" package.json
+        echo "流程中止（退出码 $code）。发布提交已产生但未推送，已用 git reset --mixed HEAD~1 撤销" >&2
+        echo "package.json 已回滚为 $current_version，可直接重试" >&2
+      else
+        echo "流程中止（退出码 $code）。自动撤销发布提交失败，请手工恢复：" >&2
+        echo "  git reset --mixed HEAD~1   # 撤销发布提交" >&2
+        echo "  git checkout -- package.json   # 或从备份还原" >&2
+      fi
+    else
+      # 情况 3：commit 已推送，不回滚，避免 HEAD 与远端分叉。
+      # 工作区 package.json 与 HEAD 本就一致（提交后未再改动），故无需处理。
+      echo "流程中止（退出码 $code）。发布提交 $new_version 已推送，工作区与 HEAD 一致，未做回滚。" >&2
+      echo "请手工完成剩余步骤（若已执行则跳过）：" >&2
+      echo "  git tag $new_version && git push origin $new_version" >&2
+      echo "若 tag 已存在导致失败：git tag -d $new_version 后重试，或直接 git push origin $new_version" >&2
+    fi
   fi
   if [ -n "$WORK_BACKUP" ]; then rm -f "$WORK_BACKUP"; fi
   if [ -n "$DRY_TMP" ]; then rm -f "$DRY_TMP"; fi
@@ -211,18 +242,18 @@ console.log("已写入 dist.zip，共 " + files.length + " 个文件")
 # git：仅显式路径，避免把意外文件卷入发布提交
 if [ "$DRY_RUN" = true ]; then
   echo "[dry-run] 跳过 git add / commit / push / tag"
-  SUCCEEDED=true
   echo "[dry-run] 完成，工作区未被修改"
   exit 0
 fi
 
 git add package.json
 git commit -m "chore: release $new_version"
+COMMITTED=true
 git push
+PUSHED=true
 
 # tag
 git tag "$new_version"
 git push origin "$new_version"
 
-SUCCEEDED=true
 echo "发布完成: $new_version"

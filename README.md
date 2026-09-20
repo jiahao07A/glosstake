@@ -51,7 +51,9 @@ node版本：18.15.0
 
 注：`./push.sh` 是本地发布辅助脚本（递增版本号、构建、打包、提交并推送），可按需修改或直接忽略。
 
-注意事项：`push.sh` 中的 `sed -i '' "..." package.json` 使用的是 macOS 的 BSD `sed` 语法。在 Windows（Git Bash / MSYS2）下需要改为 `sed -i "..." package.json`，否则会报错或产生非预期的文件。
+注：`push.sh` 已改为跨平台实现，不再依赖 `sed` 方言（版本号改写由 `node` 完成，BSD / GNU `sed` 环境下均可运行），也不再依赖系统 `zip` 命令（打包由内置的 Node ZIP 写入器完成）。脚本开头为 `set -euo pipefail`，任一步骤失败立即中止，不会在构建失败时继续提交或打 tag。
+
+注：用法为 `./push.sh [--dry-run] [MAJOR|MINOR|PATCH]`。`--dry-run` 会完整走完版本号改写演练、构建与打包，但不产生 commit / tag / push，用于验证脚本本身；版本段可显式指定，省略时进入交互式选择。
 
 提示：最新版浏览器安全方面有更新，开发调试可能有问题，会报csp错误！
 暂时的解决办法是`pnpm run dev`运行起来后，手动将`dist/manifest.json`文件里的web_accessible_resources里的use_dynamic_url都修改为false，然后浏览器扩展管理页面点击重载一下，就能正常（是@crxjs/vite-plugin依赖的问题，这个依赖很长时间没更新了，这个bug也没修复，暂时没发现更好的解决办法）。
