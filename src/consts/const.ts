@@ -241,9 +241,6 @@ Answer:
 
 export const TASK_EXPIRE_TIME = 15*60*1000
 
-export const PAGE_MAIN = 'main'
-export const PAGE_SETTINGS = 'settings'
-
 export const TRANSLATE_COOLDOWN = 5*1000
 export const TRANSLATE_FETCH_DEFAULT = 15
 export const TRANSLATE_FETCH_MIN = 5
@@ -257,7 +254,6 @@ export const TOTAL_HEIGHT_MAX = 800
 export const HEADER_HEIGHT = 44
 export const TITLE_HEIGHT = 24
 export const SEARCH_BAR_HEIGHT = 32
-export const RECOMMEND_HEIGHT = 36
 
 export const WORDS_RATE = 0.75
 export const WORDS_MIN = 500
